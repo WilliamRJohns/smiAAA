@@ -1,5 +1,6 @@
 % Thesis example with mismatch num and den degree where przd deflates 3
 % extraneous eigenvalues.
+%Requires Chebfun toolbox to be installed, http://www.chebfun.org/
 format long
 vZ =1i* linspace(-10.,10.,100);
 vZ2 = linspace(-10.,10.,2000);

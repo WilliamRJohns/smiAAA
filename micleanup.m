@@ -1,5 +1,5 @@
 %% Cleanup
-
+% Multi-function extension of Froissart doublet cleanup from Chebfun.
 function [r, pol, res, zer, z, f, w] = ...
     micleanup(r, pol, res, zer, z, f, w, Z, F, cleanup_tol) 
 % Remove spurious pole-zero pairs.

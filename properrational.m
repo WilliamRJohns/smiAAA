@@ -3,24 +3,15 @@
 %Returns the proper rational approximation (poles,residues,proper rational
 %approx) and a function handle for each approximation
 function [poles,res,bestpra,prhandle,bestpoly]=properrational(z,wnum,wden,fz,bcf,Z)
-maxpolydegree=1; %A better way to decide this degree probably exists
-
+maxpolydegree=1; %Should be set depending on application
 k=size(bcf,1);
 
-%Compute the poles with new and improved prz routine
-%[ta, poles] = zpf(z, wden, 1e-10, 1e-10);
-%fprintf('Final Pole accuracy = %d\n',ta);
-
-
 %Use poles from deflated prz e-value problem
-%poles2=przl(z,wden);
 poles=przd(z,wden);
 
 %Compute the residues via Cauchy Matrices
 Cnum=bsxfun(@minus,poles,z.').^(-1);
 Cden=-1*Cnum.^2;
-
-
 res=((Cnum*(wnum.*fz))./(Cden*wden));
 
 
@@ -52,12 +43,8 @@ for polydegree = maxpolydegree:maxpolydegree
         bestpoly{i} = polypart;
     end
 end
-
-%disp('Best error acheived was ');
 [G,I]=min(errvec);
-%disp(G);
-%disp('With a polynomial of degree');
-%disp(I-1);
+
 end
 end
 %Build function handles for each approximation

@@ -3,14 +3,14 @@ function [bestbcr,bestw,bcr,z,w,fz,err,r] = miaaa(f,Z,tol,normalize,iter)
 %function's values
 %Computes Multifunction AAA rational approximations over a common set of poles
 %in barycentric and proper rational form such that each functions approximation 
-%is with tol in inf-norm sense, where iter = number of Lawson optimization iterations
-%and normalize=true, normalizes the functions before computing the approximation and renormalizes after
+%is with tol in inf-norm sense
+%iter = number of Lawson optimization iterations
+%normalize=true, normalizes the functions before computing the approximation and renormalizes after
 
 %Returns the Lawson optimized barycentric approximation bestbcr and its
 %associated wieghts bestw. The pre optimization approximation bcr and its
 %weights w and the support points z and function values at the support
 %poitns fz.
-
 
 mmax=100;         %Max number of Support Points
 k=size(f,1);     %The number of functions
@@ -38,44 +38,8 @@ end
 %Primary Iteration to compute the barycentric rational approximations
 for n=1:mmax+1
     %Compute the deviations at each points in Z
-     dev=(abs(f-bcr));
-     err=[err max(dev,[],'all')];
-    %William looking for monotonicity in error problem
-   % fprintf('Error with %d support points = %d\n',n-1,max(sum(dev,1)))
-    
-%     figure()
-%     subplot(2,2,1)
-%     hold on
-%     plot(Z,f(1,:),'b-',Z,bcr(1,:),'r-o')
-%     title(sprintf('%d Support points',length(z)))
-%     if(~isempty(z))
-%         scatter(z,fz(1,:),'cx')
-%     end
-%     subplot(2,2,2)
-%     hold on
-%     if(~isempty(z))
-%         [pol_pr,res_pr,pra,prhandle]=properrational(z',w,w,fz',bcr,Z);
-%         plot(Z,pra(1,:),'c-x',Z,bcr(1,:));
-%         legend('pra1','bcr1')
-%         disp('Poles');
-%         disp(pol_pr);
-%     end
-%     
-%     
-%     subplot(2,2,3);
-%     hold on
-%     plot(Z,f(2,:),'b-',Z,bcr(2,:),'r-o')
-%     if(~isempty(z))
-%         scatter(z,fz(2,:),'cx')
-%     end
-%     subplot(2,2,4)
-%     hold on
-%      if(~isempty(z))
-%        plot(Z,pra(2,:),'c-x',Z,bcr(2,:));
-%         legend('pra2','bcr2')
-%     end
-%     hold off
-    
+    dev=(abs(f-bcr));
+    err=[err max(dev,[],'all')];
     if(max(dev)<tol)
         %disp('Under Tolerance')
         break
@@ -104,21 +68,7 @@ for n=1:mmax+1
     for i=1:k
         Nk = C*(w.*fz(i,:).');  %Calculate the Numerator
         bcr(i,J)=Nk(J)./D(J);   %Sets approximation values at non support points
-    end  
-%% For Williams powerpoint, will be deleted    
-%     figure()
-%     
-%     loglog(Z./(2*pi*1i),abs(f(1,:)),Z./(2*pi*1i),abs(bcr(1,:)),'LineWidth',2.0)
-%     
-%     ylim([10^-4,10^1])
-%     title(sprintf('f vs aaaf iternation %d',n))
-%     hold on
-%     freqz=z./(2*pi*1i);
-%     scatter(z./(2*pi*1i),abs(fz),'cx','LineWidth',3.0)
-%     hold off
-%     legend('f','aaaf','support points')
-    
-    
+    end   
 end
 wj=w; % Store unoptimized weights
 %Lawson Optimization (iterative wighted least squares)
@@ -157,12 +107,6 @@ D = C(J,:)*w(1:m);                                  %Calculate the Denominator
         lbcr(i,Jz)=w(m+1:end)'.*f(i,Jz)./w(1:m)';   %Set approximation values at support points
     end
     
-%figures for comparing errors
-%figure()
-%hi=plot(Z./(2*pi*1i),sum(abs(lbcr-f),1))
-%h=[h hi];
-%legend('Privious','Lawsoned Bcr')
-
 %Compare with the old approximation
 lmaxerror=max(abs(f-lbcr),[],'all');
 % figure()
@@ -195,12 +139,6 @@ end
 lw=testlw;
     
 end
-%figure()
-%plot(Z./(2*pi*1i),lerr(1,:),Z./(2*pi*1i),lerr(3,:),'--',Z./(2*pi*1i),lerr(5,:),'--',Z./(2*pi*1i),lerr(end,:),'Linewidth',1.7)
-%yline(max(lerr(1,:)),'b','Linewidth',1.5)
-%yline(max(lerr(end,:)),'Color','#7E2F8E','Linewidth',1.5)
-%legend('MIAAA','Iteration 3','Iteration 5','Final Iteration')
-%title('Abs Laswon Iteration Errors')
 end
 
 %Remove any support points with zero weight
@@ -213,7 +151,6 @@ w(io)=[];w(io+m-1)=[];
 if(~isempty(io))
     disp('zero wieght removed')
 end
-
 
 if(normalize)    %Re-nomalize Each function
     bcr=bcr(1:k,:).*norms(1:k);

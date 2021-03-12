@@ -103,3 +103,20 @@ scatter(real(poles_aaa),imag(poles_aaa),'rx','Linewidth',2);hold on;
 scatter(real(spoles_aaa),imag(spoles_aaa),'bo','Linewidth',2)
 legend('miAAA poles','smiAAApoles')
 
+%Convergence Plot for Different Values of ref
+tol=1e-8;
+figure();
+title('Convergence of smiAAA')
+set(gca,'yscale','log')
+hold on;
+for ref=[.25 1 2 6 100]
+[lpaaaf,pwj,paaaf,pzj,~,pfj,err] = smiaaa(f,s,tol,false,10,ref);
+semilogy([11:length(err)],err(11:end),'-*');
+%xline(length(err),'-',num2str(ref),'LabelHorizontalAlignment','center');
+disp(length(err))
+end
+hold off;
+legend('ref=.25','ref=1','ref=2','ref=6','ref=100');
+ylabel('Log error')
+xlabel('Iteration')
+

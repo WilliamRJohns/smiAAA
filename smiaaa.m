@@ -1,9 +1,12 @@
 function [bestbcr,bestw,bcr,z,wj,fz,err] = smiaaa(f,Z,tol,normalize,iter,ref)
 %Accepts a matrix of function values over Z with each row being a single
 %function's values
-%Computes Multifunction AAA rational approximations over a common set of poles
+%The values of Z should be on the imaginary axis for stability enforcement
+%to make sense
+
+%Computes Multifunction smiAAA rational approximations over a common set of poles
 %in barycentric form such that each functions approximation 
-%is within tol in inf-norm sense, 
+%is within tol in inf-norm sense, and all poles are stable. 
 
 %normalize=true, normalizes the functions before computing the approximation and renormalizes after
 %iter = number of Lawson optimization iterations with fixed poles to maintain stabiliety
@@ -15,7 +18,7 @@ function [bestbcr,bestw,bcr,z,wj,fz,err] = smiaaa(f,Z,tol,normalize,iter,ref)
 %poitns fz.
 
 
-mmax=100;         %Max number of Support Points
+mmax=100;        %Max number of Support Points
 k=size(f,1);     %The number of functions
 
 if(normalize)    %Nomalize Each function
@@ -141,7 +144,7 @@ else
 end
 
 %Update the Lawson wieghts(I extended to multiple functions with max)
-testlw=lw.*((max(abs(f-lbcr),[],1)));  %removed lw* for testing after discussion with lucas 
+testlw=lw.*((max(abs(f-lbcr),[],1)));  
 testlw(find(testlw==Inf))=max(testlw(testlw~=Inf));
 testlw(isnan(testlw))=mean(testlw(~isnan(testlw)));
 if(~isempty(find(testlw==NaN)) | ~isempty(find(testlw==inf)))    %If all values were NaN or Inf they can't be fixed
