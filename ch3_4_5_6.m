@@ -42,7 +42,7 @@ end
 freq=s/(2*pi*1i);
 %Introduction Figure
 figure()
-loglog(freq,abs(f),'Linewidth',1.5)
+loglog(freq,abs(f),'-*','Linewidth',1)
 title('Six entries of Admitance Matrix')
 xlabel('Frequency Hz')
 ylabel('Abs(Entries)')

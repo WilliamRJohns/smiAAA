@@ -18,7 +18,7 @@ Flam = @(x) f1(x)*A1;
 load dom.mat;
 F=f1(dom);
 
-[laaaf,wj,aaaf,zj,~,fj]=mfaaa(F(:).',dom(:).',1e-6,false,40);
+[laaaf,wj,aaaf,zj,~,fj]=miaaa(F(:).',dom(:).',1e-6,false,40);
 nn=length(wj)/2;
 [ppoles_aaa,~,ppfaaaf,~,~]=properrational(zj.',wj(nn+1:end),wj(1:nn),fj.',F(:).',dom(:).');
 
