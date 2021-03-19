@@ -3,7 +3,7 @@
 %Returns the proper rational approximation (poles,residues,proper rational
 %approx) and a function handle for each approximation
 function [poles,res,bestpra,prhandle,bestpoly]=properrational(z,wnum,wden,fz,bcf,Z)
-maxpolydegree=1; %Should be set depending on application
+maxpolydegree=0; %Should be set depending on application
 k=size(bcf,1);
 
 %Use poles from deflated prz e-value problem
