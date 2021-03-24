@@ -51,6 +51,9 @@ end
 [s,ia,~]=unique(s);
 F=F(:,ia);
 
+%FastAAA demonstration
+FastAAAcompare(f,s,1e-6,false,0);
+
 %Symetric Problem With RKfit real option
 N=2*length(s);
 Amat = util_build_real_matrix(s);
@@ -151,7 +154,7 @@ timeit(mm)
 
 
 disp('smiAAAl symetric runtime');
-mm = @() symmetricsmiaaa(f,s,1e-6,false,12,1); % handle to function
+mm = @() symmetricsmiaaa(f,s,1e-6,false,10,1); % handle to function
 timeit(mm)
 
 %Parameters for VF
@@ -232,3 +235,5 @@ Linf_aaa=max(abs(symaaa-f),[],'all');
 Linf_aaal=max(abs(symaaal-f),[],'all');
 Linf_rk_inf=max(abs(inf_rkmat-f),[],'all');
 Linf_vf=max(abs(vfmat-F),[],'all');
+
+
