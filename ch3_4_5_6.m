@@ -101,6 +101,7 @@ title('Error in Partial Fraction Conversion smiAAA')
 figure();
 scatter(real(poles_aaa),imag(poles_aaa),'rx','Linewidth',2);hold on;
 scatter(real(spoles_aaa),imag(spoles_aaa),'bo','Linewidth',2)
+xline(0);
 legend('miAAA poles','smiAAApoles')
 
 %Convergence Plot for Different Values of ref
