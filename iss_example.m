@@ -23,6 +23,9 @@ f=F.';
 s=1i*w.';
 freq=s/(2*1i);
 
+%FastAAA demonstration
+FastAAAcompare(f,s,1e-6,false,0);
+
 %Stable approximation of multiple functions with common poles can also be
 %constructed similar to vector fitting (this does not include the symetry
 %of vector fitting)

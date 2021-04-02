@@ -119,9 +119,9 @@ for n=1:300
     %fprintf("Partial Fraction error %d\n",max(dev2,[],'all'));
     %fprintf("stable pf error %d\n",max(dev,[],'all'));
     
-    if(max(dev)<tol)
+    if(max(dev,[],'all')<tol)
         disp('Stable pf Under Tolerance')
-        sprintf('with %d stable poles',length(p_poles));     
+        fprintf('with %d stable poles\n',length(p_poles));     
         break
     end
     
