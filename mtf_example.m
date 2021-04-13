@@ -47,7 +47,7 @@ w=s/1i;
 N=2*length(w);
 
 %FastAAA demonstration
-FastAAAcompare(f,s,1e-6,false,0);
+FastAAAcompare(f,s,1e-4,false,0);
 
 %Symetric Problem With RKfit real option
 
@@ -61,7 +61,7 @@ tol = 1e-3;
 b   = zeros(N, 1);
 b(1:2:end) = 1;
 
-init = util_ieee_poles(-2, 3, 1e-2, m);
+init = util_ieee_poles(-2, 6, 1e-2, m);
 %init=ppoles_aaa;
 
 [xi, ratfun, misfit, out] = rkfit(Fmat, Amat, b, init, ...
@@ -94,7 +94,7 @@ loglog(freq,abs(rk(s)-f(i,:)),'r','Linewidth',1.5);
 rkmat=[rkmat;rk(s)];
 %semilogy(freq,abs(rk(s)-F(:,i)),'rx');
 end
-[rmse_rk,rel_rk]=comp_error(f,rkmat);
+[rmse_rk,rel_rk,H2_rk]=comp_error(f,rkmat);
 
 %Covert rkfit to partial fractions and try Lawson
 clear poles; %rkfit poles function uses this name
@@ -135,14 +135,14 @@ loglog(freq,abs(rk(s)-f(i,:)),'r','Linewidth',1.5);
 inf_rkmat=[inf_rkmat;rk(s)];
 %semilogy(freq,abs(rk(s)-F(:,i)),'rx');
 end
-[rmse_rk_inf,rel_rk_inf]=comp_error(f,inf_rkmat);
+[rmse_rk_inf,rel_rk_inf,H2_rk_inf]=comp_error(f,inf_rkmat);
 
 %symetric smiaaa on the symetric problem
 [symaaal,pwj,symaaa,pzj,~,pfj] = symmetricsmiaaa(f,s,1e-4,false,10,1);
 nn=length(pwj)/2;
 [ppoles_aaa,~,ppfaaaf,~,~]=properrational(pzj.',pwj(nn+1:end),pwj(1:nn),pfj.',f,s);
-rmse_laaa=comp_error(f,symaaal);
-rmse_aaa=comp_error(f,symaaa);
+[rmse_laaa,~,H2_smiaaal]=comp_error(f,symaaal);
+[rmse_aaa,~,H2_smiaaa]=comp_error(f,symaaa);
 disp('smiAAA symetric runtime');
 mm = @() symmetricsmiaaa(f,s,1e-4,false,1,1); % handle to function
 timeit(mm)
@@ -232,7 +232,7 @@ for ii=1:3
 end
 %remove the silly duplicates
 vfmat=vfmat(:,ia);
-[rmse_vf,rel_vf]=comp_error(f,vfmat);
+[rmse_vf,rel_vf,H2_vf]=comp_error(f,vfmat);
 
 figure()
 semilogy(freq,max(abs(f-symaaa)+10^-13,[],1),'g','LineWidth',2.0);hold on;
