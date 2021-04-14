@@ -51,6 +51,9 @@ end
 [s,ia,~]=unique(s);
 F=F(:,ia);
 
+%Convergence VS poles comparison
+polecompare(f,s);
+
 %FastAAA demonstration
 FastAAAcompare(f,s,1e-6,false,0);
 

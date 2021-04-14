@@ -1,4 +1,4 @@
-function [bestbcr,bestw,bcr,z,wj,fz,err] = FastAAAcompare(f,Z,tol,normalize,iter)
+function [p_poles,err] = FastAAAcompare(f,Z,tol,normalize,iter)
 %Accepts a matrix of function values over Z with each row being a single
 %function's values
 %Computes Multifunction AAA rational approximations over a common set of poles
@@ -39,6 +39,7 @@ end
 for n=1:300
     if(length(z)==length(Z));
         fprintf('FastAAA ran out of support points!\n');
+        p_poles=[]; %Flag if stable partial fraction did no converge
         break;
     end
     

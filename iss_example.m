@@ -23,6 +23,9 @@ f=F.';
 s=1i*w.';
 freq=s/(2*1i);
 
+%poles comparison with FastAAA
+polecompare(f,s);
+
 %FastAAA demonstration
 FastAAAcompare(f,s,1e-4,false,0);
 
